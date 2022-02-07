@@ -4,7 +4,8 @@
   "description": "A Discord bot that makes it easier to find active threads.",
   "main": "src/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node src/index.js",
+    "deploy-commands": "node src/deploy-commands.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -16,6 +17,9 @@
   "author": "Phanabani",
   "license": "MIT",
   "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
+    "discord-api-types": "^0.26.1",
     "discord.js": "^13.6.0"
   }
 }
