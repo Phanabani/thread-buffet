@@ -2,10 +2,11 @@
   "name": "thread_buffet",
   "version": "1.0.0",
   "description": "A Discord bot that makes it easier to find active threads.",
-  "main": "src/index.js",
+  "type": "module",
+  "exports": "./src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "deploy-commands": "node src/deploy-commands.js",
+    "start": "node ./src/index.js",
+    "deploy-commands": "node ./src/deploy-commands.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

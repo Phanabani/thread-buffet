@@ -1,17 +1,21 @@
-const fs = require('fs');
-const { Client, Collection, Intents } = require('discord.js');
+import fs from 'node:fs';
+import { Client, Collection, Intents } from 'discord.js';
+import { token } from './config.js';
+import { getDirnameFromURL } from './common/file.js';
 
-const { token } = require('./config.json');
+const __dirname = getDirnameFromURL(import.meta.url);
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
-client.commands = new Collection();
-const commandFiles = fs.readdirSync(`${__dirname}/commands`).filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	// Set a new item in the Collection
-	// With the key as the command name and the value as the exported module
-	client.commands.set(command.data.name, command);
+async function loadCommands() {
+	client.commands = new Collection();
+	const commandFiles = fs.readdirSync(
+		`${__dirname}/commands`).filter(file => file.endsWith('.js')
+	);
+	for (const file of commandFiles) {
+		const command = (await import(`./commands/${file}`)).default;
+		client.commands.set(command.data.name, command);
+	}
 }
 
 client.once('ready', () => {
@@ -22,7 +26,6 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);
-
 	if (!command) return;
 
 	try {
@@ -33,4 +36,9 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.login(token);
+async function main() {
+	await loadCommands();
+	await client.login(token);
+}
+
+main().catch((e) => console.error(`Uncaught in main: ${e}`));
