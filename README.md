@@ -27,7 +27,13 @@ Run a build at least once,
 npm run build
 ```
 
-then you can start the bot.
+register commands at least once,
+
+```shell
+npm run register-commands
+```
+
+then you can start the bot whenever.
 
 ```shell
 npm run start
