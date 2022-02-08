@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    // Type checking
+    "alwaysStrict": true,
+    "strictNullChecks": true,
     // Emit
     "outDir": "dist",
     "sourceMap": true,
