@@ -1,7 +1,7 @@
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { clientId, guildId, token } from './config.js';
-import { importAllDefault } from './common/dynamic-import.js';
+import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL } from './common/file.js';
 
 const __dirname = getDirnameFromURL(import.meta.url);

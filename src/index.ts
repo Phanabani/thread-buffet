@@ -1,6 +1,6 @@
 import { Client, Collection, Intents } from 'discord.js';
 import { token } from './config.js';
-import { importAllDefault } from './common/dynamic-import.js';
+import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL } from './common/file.js';
 
 const __dirname = getDirnameFromURL(import.meta.url);
