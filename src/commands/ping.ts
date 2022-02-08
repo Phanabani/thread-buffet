@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
+import { DiscordCommandHandler } from '../types/discordCommandHandler';
 
-export default {
+export default <DiscordCommandHandler>{
 	data: new SlashCommandBuilder()
 		.setName('ping')
 		.setDescription('Replies with Pong!'),
