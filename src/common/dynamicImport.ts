@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-export async function importAllDefault(directory) {
+export async function importAllDefault<ImportType>(directory): Promise<ImportType[]> {
 	const commands = [];
 	const commandFiles = fs.readdirSync(directory).filter(file => file.endsWith('.js')
 	);

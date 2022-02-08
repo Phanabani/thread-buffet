@@ -2,6 +2,7 @@ import { Client, Collection, Intents } from 'discord.js';
 import { token } from './config.js';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL } from './common/file.js';
+import { DiscordCommandHandler } from "./types/discordCommandHandler";
 
 const __dirname = getDirnameFromURL(import.meta.url);
 
@@ -9,14 +10,14 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 async function loadCommands() {
 	client.commands = new Collection();
-	const commands = await importAllDefault(`${__dirname}/commands`);
+	const commands = await importAllDefault<DiscordCommandHandler>(`${__dirname}/commands`);
 	for (const command of commands) {
 		client.commands.set(command.data.name, command);
 	}
 }
 
 async function loadEvents() {
-	const events = await importAllDefault(`${__dirname}/events`);
+	const events = await importAllDefault<DiscordEventHandler<any>>(`${__dirname}/events`);
 	for (const event of events) {
 		if (event.once) {
 			client.once(event.name, (...args) => event.execute(...args));

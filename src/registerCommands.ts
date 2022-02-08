@@ -3,11 +3,12 @@ import { Routes } from 'discord-api-types/v9';
 import { clientId, guildId, token } from './config.js';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL } from './common/file.js';
+import { DiscordCommandHandler } from "./types/discordCommandHandler";
 
 const __dirname = getDirnameFromURL(import.meta.url);
 
 async function loadCommands() {
-	const commands = await importAllDefault(`${__dirname}/commands`);
+	const commands = await importAllDefault<DiscordCommandHandler>(`${__dirname}/commands`);
 	return commands.map(x => x.data.toJSON());
 }
 
