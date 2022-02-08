@@ -1,21 +1,14 @@
-import fs from 'node:fs';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { clientId, guildId, token } from './config.js';
+import { importAllDefault } from './common/dynamic-import.js';
 import { getDirnameFromURL } from './common/file.js';
 
 const __dirname = getDirnameFromURL(import.meta.url);
 
 async function loadCommands() {
-	const commands = [];
-	const commandFiles = fs.readdirSync(
-		`${__dirname}/commands`).filter(file => file.endsWith('.js')
-	);
-	for (const file of commandFiles) {
-		const command = (await import(`./commands/${file}`)).default;
-		commands.push(command.data.toJSON());
-	}
-	return commands;
+	const commands = await importAllDefault(`${__dirname}/commands`);
+	return commands.map(x => x.data.toJSON());
 }
 
 async function registerCommands() {

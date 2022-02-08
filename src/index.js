@@ -1,6 +1,6 @@
-import fs from 'node:fs';
 import { Client, Collection, Intents } from 'discord.js';
 import { token } from './config.js';
+import { importAllDefault } from './common/dynamic-import.js';
 import { getDirnameFromURL } from './common/file.js';
 
 const __dirname = getDirnameFromURL(import.meta.url);
@@ -9,11 +9,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 async function loadCommands() {
 	client.commands = new Collection();
-	const commandFiles = fs.readdirSync(
-		`${__dirname}/commands`).filter(file => file.endsWith('.js')
-	);
-	for (const file of commandFiles) {
-		const command = (await import(`./commands/${file}`)).default;
+	const commands = await importAllDefault(`${__dirname}/commands`);
+	for (const command of commands) {
 		client.commands.set(command.data.name, command);
 	}
 }
