@@ -20,4 +20,4 @@ async function registerCommands() {
 		.catch(console.error);
 }
 
-registerCommands();
+registerCommands().catch((e) => console.error(`Uncaught in registerCommands: ${e}`));
