@@ -8,7 +8,7 @@
     // JavaScript support
     "allowJs": true,
     // Modules
-    "module": "CommonJS",
+    "module": "ES2020",
     "moduleResolution": "node"
   },
   "include": ["./src/**/*"]
