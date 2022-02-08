@@ -8,17 +8,17 @@ import { DiscordCommandHandler } from './types/discordCommandHandler';
 const __dirname = getDirnameFromURL(import.meta.url);
 
 async function loadCommands() {
-	const commands = await importAllDefault<DiscordCommandHandler>(`${__dirname}/commands`);
-	return commands.map(x => x.data.toJSON());
+    const commands = await importAllDefault<DiscordCommandHandler>(`${__dirname}/commands`);
+    return commands.map(x => x.data.toJSON());
 }
 
 async function registerCommands() {
-	const commands = await loadCommands();
-	const rest = new REST({ version: '9' }).setToken(token);
+    const commands = await loadCommands();
+    const rest = new REST({ version: '9' }).setToken(token);
 
-	rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-		.then(() => console.log('Successfully registered application commands.'))
-		.catch(console.error);
+    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+        .then(() => console.log('Successfully registered application commands.'))
+        .catch(console.error);
 }
 
 registerCommands().catch((e) => console.error(`Uncaught in registerCommands: ${e}`));
