@@ -15,6 +15,17 @@ async function loadCommands() {
 	}
 }
 
+async function loadEvents() {
+	const events = await importAllDefault(`${__dirname}/events`);
+	for (const event of events) {
+		if (event.once) {
+			client.once(event.name, (...args) => event.execute(...args));
+		} else {
+			client.on(event.name, (...args) => event.execute(...args));
+		}
+	}
+}
+
 client.once('ready', () => {
 	console.log('Ready!');
 });
@@ -29,12 +40,16 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		await interaction.reply({
+			content: 'There was an error while executing this command!',
+			ephemeral: true
+		});
 	}
 });
 
 async function main() {
 	await loadCommands();
+	await loadEvents();
 	await client.login(token);
 }
 
