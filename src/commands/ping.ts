@@ -5,7 +5,7 @@ import { DiscordCommandHandler } from '../types/discordCommandHandler';
 export default <DiscordCommandHandler>{
     data: new SlashCommandBuilder()
         .setName('ping')
-        .setDescription('Replies with Pong!'),
+        .setDescription('Ping the bot.'),
     async execute(interaction: BaseCommandInteraction) {
         await interaction.reply('Pong!');
     },
