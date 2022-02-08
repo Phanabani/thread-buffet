@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
+    // Emit
     "outDir": "dist",
-    "allowJs": true,
-    "target": "es2021",
     "sourceMap": true,
+    // Language and environment
+    "target": "es2021",
+    // JavaScript support
+    "allowJs": true,
+    // Modules
     "moduleResolution": "node"
   },
   "include": ["./src/**/*"]
