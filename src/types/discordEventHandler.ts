@@ -1,5 +1,5 @@
-export interface DiscordEventHandler<EventArgType> {
+export interface DiscordEventHandler<T extends readonly unknown[]> {
     name: string;
     once: boolean;
-    execute: (EventArgType) => void;
+    execute: (...args: T) => void;
 }
