@@ -25,8 +25,10 @@ async function loadEvents() {
 	const events = await importAllDefault<DiscordEventHandler<any>>(`${__dirname}/events`);
 	for (const event of events) {
 		if (event.once) {
+			// @ts-ignore
 			client.once(event.name, (...args) => event.execute(...args));
 		} else {
+			// @ts-ignore
 			client.on(event.name, (...args) => event.execute(...args));
 		}
 	}
