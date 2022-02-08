@@ -8,6 +8,7 @@
     // JavaScript support
     "allowJs": true,
     // Modules
+    "module": "CommonJS",
     "moduleResolution": "node"
   },
   "include": ["./src/**/*"]
