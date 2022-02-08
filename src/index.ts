@@ -2,7 +2,7 @@ import { Client, Collection, Intents } from 'discord.js';
 import { token } from './config.js';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL } from './common/file.js';
-import { DiscordCommandHandler } from "./types/discordCommandHandler";
+import { DiscordCommandHandler } from './types/discordCommandHandler';
 import { DiscordEventHandler } from './types/discordEventHandler';
 
 const __dirname = getDirnameFromURL(import.meta.url);

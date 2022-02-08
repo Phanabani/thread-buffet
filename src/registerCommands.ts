@@ -3,7 +3,7 @@ import { Routes } from 'discord-api-types/v9';
 import { clientId, guildId, token } from './config.js';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL } from './common/file.js';
-import { DiscordCommandHandler } from "./types/discordCommandHandler";
+import { DiscordCommandHandler } from './types/discordCommandHandler';
 
 const __dirname = getDirnameFromURL(import.meta.url);
 

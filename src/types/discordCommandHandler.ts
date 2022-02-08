@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder } from '@discordjs/builders';
 
 export interface DiscordCommandHandler {
     data: SlashCommandBuilder;
