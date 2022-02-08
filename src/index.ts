@@ -7,13 +7,17 @@ import { DiscordEventHandler } from './types/discordEventHandler';
 
 const __dirname = getDirnameFromURL(import.meta.url);
 
+interface ClientWithCommands extends Client {
+	commands: Collection<string, DiscordCommandHandler>;
+}
+
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 async function loadCommands() {
-	client.commands = new Collection();
+	(client as ClientWithCommands).commands = new Collection();
 	const commands = await importAllDefault<DiscordCommandHandler>(`${__dirname}/commands`);
 	for (const command of commands) {
-		client.commands.set(command.data.name, command);
+		(client as ClientWithCommands).commands.set(command.data.name, command);
 	}
 }
 
@@ -35,7 +39,7 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
-	const command = client.commands.get(interaction.commandName);
+	const command = (client as ClientWithCommands).commands.get(interaction.commandName);
 	if (!command) return;
 
 	try {
