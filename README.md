@@ -13,11 +13,27 @@ A Discord bot that makes it easier to find active threads.
 
 ## Install
 
-Todo.
+Run the following command in the console to install dependencies.
+
+```shell
+npm install
+```
 
 ## Usage
 
-Todo.
+Run a build at least once,
+
+```shell
+npm run build
+```
+
+then you can start the bot.
+
+```shell
+npm run start
+```
+
+That's it. :)
 
 ## License
 
