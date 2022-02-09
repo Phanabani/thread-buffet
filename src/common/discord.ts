@@ -1,4 +1,4 @@
-import { BaseCommandInteraction } from 'discord.js';
+import { AnyChannel, BaseCommandInteraction, Client, Message, Snowflake } from 'discord.js';
 
 export async function assertInGuild(
     interaction: BaseCommandInteraction
@@ -39,4 +39,25 @@ export async function assertPerms(
         return false;
     }
     return true;
+}
+
+export async function fetchChannel(
+    client: Client, channelId: Snowflake
+): Promise<AnyChannel | null> {
+    let channel: AnyChannel | null | undefined = client.channels.cache.get(channelId);
+    if (!channel) {
+        // We couldn't get a cached channel, so try to fetch it
+        channel = await client.channels.fetch(channelId);
+        if (!channel) return null;
+    }
+    return channel;
+}
+
+export async function fetchMessage(
+    client: Client, channelId: Snowflake, msgId: Snowflake
+): Promise<Message | null> {
+    if (!(channelId && msgId)) return null;
+    const channel = await fetchChannel(client, channelId);
+    if (!(channel && channel.isText())) return null;
+    return await channel.messages.fetch(msgId)
 }
