@@ -1,8 +1,38 @@
 import { Embed } from '@discordjs/builders';
-import { Client, Guild } from 'discord.js';
+import { Client, Collection, Guild, ThreadChannel } from 'discord.js';
 import { COLOR_THREADS_INFO } from './common/constants.js';
 import { fetchChannel, fetchMessage } from './common/discord.js';
 import { getThreadChannel, getThreadMessage, setThreadMessage } from './database/database.js';
+
+function createThreadsEmbed(threads: Collection<string, ThreadChannel> | null): Embed {
+    function compareThreads(t1: ThreadChannel, t2: ThreadChannel): number {
+        const parentName1 = t1.parent?.name || '';
+        const parentName2 = t2.parent?.name || '';
+        return parentName1.localeCompare(parentName2);
+    }
+
+    let content = 'None';
+    if (threads) {
+        const contentParts: string[] = [];
+        let lastParentName: string | null = null;
+        for (const [id, thread] of threads.sorted(compareThreads)) {
+            let parentName = thread.parent?.name;
+            if (parentName && parentName !== lastParentName) {
+                if (lastParentName !== null) contentParts.push('');
+                lastParentName = parentName;
+                contentParts.push(`#${parentName}`)
+            }
+            contentParts.push(`• <#${id}>`);
+        }
+        content = contentParts.join('\n');
+    }
+
+    return new Embed()
+        .setTitle('Active threads')
+        .setDescription(content)
+        .setColor(COLOR_THREADS_INFO)
+        .setFooter({ text: 'Made by Angie 💕' });
+}
 
 async function deleteOldThreadMessage(client: Client, guild: Guild) {
     const channelId = await getThreadChannel(guild.id);
@@ -31,7 +61,8 @@ export async function onThreadChannelDidChange(client: Client, guild: Guild) {
     // Channel is set, so create a new message
     const channel = await fetchChannel(client, channelId);
     if (!(channel && channel.isText())) return;
-    const msg = await channel.send('.');
+    const embed = createThreadsEmbed(null);
+    const msg = await channel.send({ embeds: [embed] });
     await setThreadMessage(guild.id, msg.id);
     await onThreadsUpdated(client, guild);
 }
@@ -48,16 +79,6 @@ export async function onThreadsUpdated(client: Client, guild: Guild) {
     if (threads.hasMore) {
         console.warn('fetchActiveThreads.hasMore is true. idk what this means.');
     }
-    const msgContentParts: string[] = [];
-    for (const [id, thread] of threads.threads) {
-        msgContentParts.push(`<#${id}>`);
-    }
-    const embed = (
-        new Embed()
-            .setTitle('Active threads')
-            .setDescription(msgContentParts.join('\n'))
-            .setColor(COLOR_THREADS_INFO)
-            .setFooter({ text: 'hi 💕' })
-    );
+    const embed = createThreadsEmbed(threads.threads);
     await msg.edit({ embeds: [embed] })
 }
