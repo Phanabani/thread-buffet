@@ -14,6 +14,7 @@ A Discord bot that makes it easier to find active threads.
 
 ## Install
 
+Thread Buffet requires Node.js `^17.4.0` and NPM `^8.4.0`.
 Run the following commands in the console to install dependencies and
 build the bot.
 
