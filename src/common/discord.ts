@@ -4,7 +4,7 @@ export async function assertInGuild(
     interaction: BaseCommandInteraction
 ): Promise<boolean> {
     const i = interaction;
-    if (i.inGuild()) return true;
+    if (i.guild) return true;
     await i.reply({
         content: 'This is a server-only command.', ephemeral: true
     });
