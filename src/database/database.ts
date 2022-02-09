@@ -41,7 +41,9 @@ export async function getThreadChannel(guildId: Snowflake): Promise<Snowflake | 
     return db.data!.guilds[guildId]!.threadChannel;
 }
 
-export async function setThreadChannel(guildId: Snowflake, channelId: Snowflake): Promise<void> {
+export async function setThreadChannel(
+    guildId: Snowflake, channelId: Snowflake | null
+): Promise<void> {
     await tryAddGuild(guildId);
     db.data!.guilds[guildId]!.threadChannel = channelId;
     await db.write();
@@ -52,7 +54,9 @@ export async function getThreadMessage(guildId: Snowflake): Promise<Snowflake | 
     return db.data!.guilds[guildId]!.threadMessage;
 }
 
-export async function setThreadMessage(guildId: Snowflake, msgId: Snowflake): Promise<void> {
+export async function setThreadMessage(
+    guildId: Snowflake, msgId: Snowflake | null
+): Promise<void> {
     await tryAddGuild(guildId);
     db.data!.guilds[guildId]!.threadMessage = msgId;
     await db.write();
