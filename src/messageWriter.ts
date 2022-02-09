@@ -11,7 +11,7 @@ function createThreadsEmbed(threads: Collection<string, ThreadChannel> | null): 
         return parentName1.localeCompare(parentName2);
     }
 
-    let content = 'None';
+    let content = '';
     if (threads) {
         const contentParts: string[] = [];
         let lastParentName: string | null = null;
@@ -27,6 +27,7 @@ function createThreadsEmbed(threads: Collection<string, ThreadChannel> | null): 
         content = contentParts.join('\n');
     }
 
+    content ||= 'None';
     return new Embed()
         .setTitle('Active threads')
         .setDescription(content)
