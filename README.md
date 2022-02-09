@@ -24,25 +24,26 @@ npm run build
 
 ### Config
 
-Create a file called `config.js` in the `dist` folder. Paste the following
+Create a file called `config.json` in the `dist` folder. Paste the following
 in it:
 
-```js
-export const clientId = "YOUR_BOT_CLIENT_ID";
-export const guildId = "YOUR_TESTING_GUILD_ID";
-export const token = "YOUR_BOT_TOKEN";
+```json
+{
+    "clientId": "YOUR_BOT_CLIENT_ID",
+    "guildId": "YOUR_TESTING_GUILD_ID",
+    "token": "YOUR_BOT_TOKEN"
+}
 ```
 
-Replace each string with their respective IDs/token. `guildId` may be specified
-to quickly register commands in a testing server (global command registration
-on the other hand can take up to an hour).
+Replace each value with their respective IDs/token. `guildId` may be specified
+to quickly register commands in a testing server, but it is not required.
 
 ### Register commands
 
-You need to register commands at least once.
+You need to register commands at least once. Run one of the following commands:
 
 ```shell
-# Register commands in one guild (instant)
+# Register commands in one guild (instant, specified in your config.json)
 npm run register-commands
 # Register commands globally (may take up to an hour)
 npm run register-commands global
