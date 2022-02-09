@@ -29,7 +29,7 @@ export default <DiscordCommandHandler>{
     data: new SlashCommandBuilder()
         .setName('remove-thread-channel')
         .setDescription(
-            'Remove the previously set channel where active threads will be ' +
+            'Remove the previously set channel where active threads were ' +
             'shared (does not delete the channel).'
         ),
     execute
