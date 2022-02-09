@@ -11,6 +11,17 @@ export async function assertInGuild(
     return false;
 }
 
+export async function assertInTextChannel(
+    interaction: BaseCommandInteraction
+): Promise<boolean> {
+    const i = interaction;
+    if (i.channel) return true;
+    await i.reply({
+        content: 'This command must be run in a text channel.', ephemeral: true
+    });
+    return false;
+}
+
 export async function assertPerms(
     interaction: BaseCommandInteraction, permissions: bigint
 ): Promise<boolean> {
