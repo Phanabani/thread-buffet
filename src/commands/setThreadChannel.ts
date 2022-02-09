@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType } from 'discord-api-types';
 import { BaseCommandInteraction, CommandInteractionOptionResolver, TextBasedChannel, TextChannel } from 'discord.js';
 import { PERMISSIONS_THREAD_COMMANDS } from '../common/constants.js';
-import { assertPerms } from '../common/discord.js';
+import { assertInGuild, assertInTextChannel, assertPerms } from '../common/discord.js';
 import { setThreadChannel } from '../database/database.js';
 import { DiscordCommandHandler } from '../types/discordCommandHandler';
 
@@ -10,6 +10,8 @@ async function execute(interaction: BaseCommandInteraction) {
     const i = interaction;
     const options = i.options as CommandInteractionOptionResolver;
 
+    if (!await assertInGuild(i)) return;
+    if (!await assertInTextChannel(i)) return;
     if (!await assertPerms(i, PERMISSIONS_THREAD_COMMANDS)) return;
 
     const channel = (options.getChannel('channel') || i.channel) as TextChannel;
