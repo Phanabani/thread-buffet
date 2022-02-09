@@ -56,7 +56,14 @@ Run the following command in the console to run the bot.
 npm run start
 ```
 
-That's it. ^-^
+You can also run with the [PM2 process manager](https://pm2.keymetrics.io/)
+(to easily run in the background).
+
+```shell
+pm2 start ecosystem.config.cjs
+```
+
+That's it! ^-^
 
 ## Commands
 
