@@ -34,6 +34,22 @@ async function loadEvents() {
     }
 }
 
+process.on('uncaughtException', error => {
+	console.error('Unhandled exception: ', error);
+});
+
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection: ', error);
+});
+
+client.on('error', error => {
+	console.error('The client encountered an error:', error);
+});
+
+client.on('shardError', error => {
+	console.error('A websocket connection encountered an error:', error);
+});
+
 client.once('ready', () => {
     console.log('Ready!');
 });
@@ -61,4 +77,4 @@ async function main() {
     await client.login(token);
 }
 
-main().catch((e) => console.error(`Uncaught in main: ${e}`));
+main();

@@ -25,5 +25,13 @@ async function registerCommands(global: boolean = false) {
     console.log('Successfully registered application commands.');
 }
 
+process.on('uncaughtException', error => {
+	console.error('Unhandled exception: ', error);
+});
+
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection: ', error);
+});
+
 const global = Process.argv[2] === 'global';
-registerCommands(global).catch((e) => console.error(`Uncaught in registerCommands: ${e}`));
+registerCommands(global);
