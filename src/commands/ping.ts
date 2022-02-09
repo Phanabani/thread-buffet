@@ -8,6 +8,8 @@ export default <DiscordCommandHandler>{
         .setDescription('Ping the bot.'),
     async execute(interaction: BaseCommandInteraction) {
         const latency = new Date().getTime() - interaction.createdAt.getTime();
-        await interaction.reply(`${latency}ms`);
-    },
+        await interaction.reply({
+            content: `${latency}ms`, ephemeral: true
+        });
+    }
 };
