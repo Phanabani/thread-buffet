@@ -1,9 +1,10 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ChannelType } from 'discord-api-types';
-import { BaseCommandInteraction, CommandInteractionOptionResolver, TextBasedChannel, TextChannel } from 'discord.js';
+import { BaseCommandInteraction, CommandInteractionOptionResolver, TextBasedChannel } from 'discord.js';
 import { PERMISSIONS_THREAD_COMMANDS } from '../common/constants.js';
 import { assertInGuild, assertInTextChannel, assertPerms } from '../common/discord.js';
 import { setThreadChannel } from '../database/database.js';
+import { onThreadChannelDidChange, onThreadChannelWillChange } from '../messageWriter.js';
 import { DiscordCommandHandler } from '../types/discordCommandHandler';
 
 async function execute(interaction: BaseCommandInteraction) {
@@ -14,12 +15,15 @@ async function execute(interaction: BaseCommandInteraction) {
     if (!await assertInTextChannel(i)) return;
     if (!await assertPerms(i, PERMISSIONS_THREAD_COMMANDS)) return;
 
-    const channel = (options.getChannel('channel') || i.channel) as TextChannel;
-    await setThreadChannel(i.guildId!, channel.id);
+    await i.deferReply({ ephemeral: true });
 
-    await i.reply({
-        content: `Set thread channel to <#${channel.id}>`,
-        ephemeral: true
+    await onThreadChannelWillChange(i.client, i.guild!);
+    const channel = <TextBasedChannel | null>options.getChannel('channel') || i.channel;
+    await setThreadChannel(i.guildId!, channel!.id);
+    await onThreadChannelDidChange(i.client, i.guild!);
+
+    await i.editReply({
+        content: `Set thread channel to <#${channel!.id}>`
     });
 }
 
