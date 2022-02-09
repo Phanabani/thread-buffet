@@ -1,14 +1,15 @@
+import { Snowflake } from 'discord.js';
+import { JSONFile, Low } from 'lowdb';
 import * as path from 'node:path';
-import { Low, JSONFile } from 'lowdb';
 import { getDirnameFromURL } from '../common/file.js';
 
 const __dirname = getDirnameFromURL(import.meta.url);
 
 interface Model {
     guilds: {
-        [guildId: string]: {
-            threadChannel: string | null;
-            threadMessage: string | null;
+        [guildId: Snowflake]: {
+            threadChannel: Snowflake | null;
+            threadMessage: Snowflake | null;
         }
     };
 }
@@ -26,7 +27,7 @@ async function initDatabase(): Promise<void> {
 
 initDatabase().catch((e) => console.error(`Uncaught in initDatabase: ${e}`));
 
-async function tryAddGuild(guildId: string): Promise<void> {
+async function tryAddGuild(guildId: Snowflake): Promise<void> {
     if (db.data === null) await initDatabase();
     if (db.data!.guilds.hasOwnProperty(guildId)) return;
     db.data!.guilds[guildId] = {
@@ -35,23 +36,23 @@ async function tryAddGuild(guildId: string): Promise<void> {
     await db.write();
 }
 
-export async function getThreadChannel(guildId: string): Promise<string | null> {
+export async function getThreadChannel(guildId: Snowflake): Promise<Snowflake | null> {
     await tryAddGuild(guildId);
     return db.data!.guilds[guildId]!.threadChannel;
 }
 
-export async function setThreadChannel(guildId: string, channelId: string): Promise<void> {
+export async function setThreadChannel(guildId: Snowflake, channelId: Snowflake): Promise<void> {
     await tryAddGuild(guildId);
     db.data!.guilds[guildId]!.threadChannel = channelId;
     await db.write();
 }
 
-export async function getThreadMessage(guildId: string): Promise<string | null> {
+export async function getThreadMessage(guildId: Snowflake): Promise<Snowflake | null> {
     await tryAddGuild(guildId);
     return db.data!.guilds[guildId]!.threadMessage;
 }
 
-export async function setThreadMessage(guildId: string, msgId: string): Promise<void> {
+export async function setThreadMessage(guildId: Snowflake, msgId: Snowflake): Promise<void> {
     await tryAddGuild(guildId);
     db.data!.guilds[guildId]!.threadMessage = msgId;
     await db.write();
