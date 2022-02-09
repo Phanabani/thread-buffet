@@ -1,5 +1,6 @@
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
+import * as Process from 'node:process';
 import { clientId, guildId, token } from './config.js';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL } from './common/file.js';
@@ -12,13 +13,17 @@ async function loadCommands() {
     return commands.map(x => x.data.toJSON());
 }
 
-async function registerCommands() {
+async function registerCommands(global: boolean = false) {
     const commands = await loadCommands();
     const rest = new REST({ version: '9' }).setToken(token);
 
-    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-        .then(() => console.log('Successfully registered application commands.'))
-        .catch(console.error);
+    if (global) {
+        await rest.put(Routes.applicationCommands(clientId), { body: commands });
+    } else {
+        await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+    }
+    console.log('Successfully registered application commands.');
 }
 
-registerCommands().catch((e) => console.error(`Uncaught in registerCommands: ${e}`));
+const global = Process.argv[2] === 'global';
+registerCommands(global).catch((e) => console.error(`Uncaught in registerCommands: ${e}`));
