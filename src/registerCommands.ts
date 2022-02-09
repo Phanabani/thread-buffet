@@ -3,7 +3,7 @@ import { Routes } from 'discord-api-types/v9';
 import * as Process from 'node:process';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL, readJson } from './common/file.js';
-import { Config } from './types/config.js';
+import { ConfigFile } from './types/configFile.js';
 import { DiscordCommandHandler } from './types/discordCommandHandler';
 
 const __dirname = getDirnameFromURL(import.meta.url);
@@ -14,7 +14,7 @@ async function loadCommands() {
 }
 
 async function registerCommands(global: boolean = false) {
-    const config = <Config>readJson(__dirname, 'config.json');
+    const config = <ConfigFile>readJson(__dirname, 'config.json');
     const commands = await loadCommands();
     const rest = new REST({ version: '9' }).setToken(config.token);
 

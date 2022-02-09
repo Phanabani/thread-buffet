@@ -1,7 +1,7 @@
 import { Client, Collection, Intents } from 'discord.js';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL, readJson } from './common/file.js';
-import { Config } from './types/config.js';
+import { ConfigFile } from './types/configFile.js';
 import { DiscordCommandHandler } from './types/discordCommandHandler';
 import { DiscordEventHandler } from './types/discordEventHandler';
 
@@ -72,7 +72,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 async function main() {
-    const config = <Config>readJson(__dirname, 'config.json');
+    const config = <ConfigFile>readJson(__dirname, 'config.json');
     await loadCommands();
     await loadEvents();
     await client.login(config.token);
