@@ -26,10 +26,10 @@ async function loadEvents() {
     for (const event of events) {
         if (event.once) {
             // @ts-ignore
-            client.once(event.name, (...args) => event.execute(...args));
+            client.once(event.name, async (...args) => await event.execute(...args));
         } else {
             // @ts-ignore
-            client.on(event.name, (...args) => event.execute(...args));
+            client.on(event.name, async (...args) => await event.execute(...args));
         }
     }
 }
