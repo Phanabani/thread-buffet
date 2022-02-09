@@ -4,6 +4,10 @@
   "description": "A Discord bot that makes it easier to find active threads.",
   "type": "module",
   "exports": "./src/index.js",
+  "engines" : {
+    "npm" : "^8.4.0",
+    "node" : "^17.4.0"
+  },
   "scripts": {
     "build": "npx tsc --build",
     "clean": "npx tsc --build --clean",
