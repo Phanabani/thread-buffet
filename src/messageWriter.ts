@@ -5,7 +5,11 @@ import { fetchChannel, fetchMessage } from './common/discord.js';
 import { getThreadChannel, getThreadMessage, setThreadMessage } from './database/database.js';
 
 function createThreadsEmbed(threads: Collection<string, ThreadChannel> | null): Embed {
-    function compareThreads(t1: ThreadChannel, t2: ThreadChannel): number {
+    function compareThreadNames(t1: ThreadChannel, t2: ThreadChannel): number {
+        return t1.name.localeCompare(t2.name);
+    }
+
+    function compareThreadParentNames(t1: ThreadChannel, t2: ThreadChannel): number {
         const parentName1 = t1.parent?.name || '';
         const parentName2 = t2.parent?.name || '';
         return parentName1.localeCompare(parentName2);
@@ -15,7 +19,11 @@ function createThreadsEmbed(threads: Collection<string, ThreadChannel> | null): 
     if (threads) {
         const contentParts: string[] = [];
         let lastParentName: string | null = null;
-        for (const [id, thread] of threads.sorted(compareThreads)) {
+        // Sort by thread name, then by their parent threads
+        const sortedThreads = threads.sorted(compareThreadNames);
+        sortedThreads.sort(compareThreadParentNames);
+
+        for (const [id, thread] of sortedThreads) {
             let parentName = thread.parent?.name;
             if (parentName && parentName !== lastParentName) {
                 if (lastParentName !== null) contentParts.push('');
