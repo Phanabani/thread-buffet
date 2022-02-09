@@ -1,10 +1,11 @@
 import { ThreadChannel } from 'discord.js';
+import { onThreadsUpdated } from '../messageWriter.js';
 import { DiscordEventHandler } from '../types/discordEventHandler';
 
 export default <DiscordEventHandler<[ThreadChannel, ThreadChannel]>>{
     name: 'threadUpdate',
     once: false,
-    execute(oldThread, newThread) {
-        console.log(`Thread updated: ${oldThread.name} ${newThread.name}`)
-    },
+    async execute(oldThread, newThread) {
+        await onThreadsUpdated(newThread.client, newThread.guild);
+    }
 };
