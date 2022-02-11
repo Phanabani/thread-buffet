@@ -1,5 +1,5 @@
 import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v9';
+import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v9';
 import * as Process from 'node:process';
 import { importAllDefault } from './common/dynamicImport.js';
 import { getDirnameFromURL, readJson } from './common/file.js';
@@ -13,9 +13,12 @@ async function loadCommands() {
     return commands.map(x => x.data.toJSON());
 }
 
-async function registerCommands(global: boolean = false) {
+async function registerCommands(global: boolean = false, unregister: boolean = false) {
     const config = <ConfigFile>readJson(__dirname, 'config.json');
-    const commands = await loadCommands();
+    let commands: RESTPostAPIApplicationCommandsJSONBody[] = [];
+    if (!unregister) {
+        commands = await loadCommands();
+    }
     const rest = new REST({ version: '9' }).setToken(config.token);
 
     if (global) {
@@ -40,5 +43,6 @@ process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection: ', error);
 });
 
-const global = Process.argv[2] === 'global';
-registerCommands(global);
+const global = Process.argv.includes('global');
+const unregister = Process.argv.includes('unregister');
+registerCommands(global, unregister);
