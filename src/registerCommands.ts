@@ -32,7 +32,11 @@ async function registerCommands(global: boolean = false, unregister: boolean = f
             { body: commands }
         );
     }
-    console.log('Successfully registered application commands.');
+    if (unregister) {
+        console.log('Successfully unregistered application commands.');
+    } else {
+        console.log('Successfully registered application commands.');
+    }
 }
 
 process.on('uncaughtException', error => {
