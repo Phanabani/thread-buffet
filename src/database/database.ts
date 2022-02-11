@@ -10,6 +10,7 @@ interface Model {
         [guildId: Snowflake]: {
             threadChannel: Snowflake | null;
             threadMessage: Snowflake | null;
+            viewAsRole: Snowflake | null;
         }
     };
 }
@@ -31,7 +32,7 @@ async function tryAddGuild(guildId: Snowflake): Promise<void> {
     if (db.data === null) await initDatabase();
     if (db.data!.guilds.hasOwnProperty(guildId)) return;
     db.data!.guilds[guildId] = {
-        threadChannel: null, threadMessage: null
+        threadChannel: null, threadMessage: null, viewAsRole: null
     };
     await db.write();
 }
@@ -59,5 +60,18 @@ export async function setThreadMessage(
 ): Promise<void> {
     await tryAddGuild(guildId);
     db.data!.guilds[guildId]!.threadMessage = msgId;
+    await db.write();
+}
+
+export async function getViewAsRole(guildId: Snowflake): Promise<Snowflake | null> {
+    await tryAddGuild(guildId);
+    return db.data!.guilds[guildId]!.viewAsRole;
+}
+
+export async function setViewAsRole(
+    guildId: Snowflake, role: Snowflake | null
+): Promise<void> {
+    await tryAddGuild(guildId);
+    db.data!.guilds[guildId]!.viewAsRole = role;
     await db.write();
 }

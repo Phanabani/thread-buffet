@@ -69,11 +69,12 @@ That's it! ^-^
 
 ## Commands
 
-| Command                        | Description                                                                                       |
-|--------------------------------|---------------------------------------------------------------------------------------------------|
-| `ping`                         | Ping the bot.                                                                                     |
-| `set-thread-channel [channel]` | Set the channel where active threads will be shared.                                              |
-| `remove-thread-channel`        | Remove the previously set channel where active threads were shared (does not delete the channel). |
+| Command                        | Description                                                                                                                                       |
+|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ping`                         | Ping the bot.                                                                                                                                     |
+| `set-thread-channel [channel]` | Set the channel where active threads will be shared.                                                                                              |
+| `remove-thread-channel`        | Remove the previously set channel where active threads were shared (does not delete the channel).                                                 |
+| `set-view-as-role [role]`      | Set the role which will be used to determine whether a thread should be visible (based on permissions). If not specified, @everyone will be used. |
 
 
 ## License
