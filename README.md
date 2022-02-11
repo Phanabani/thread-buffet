@@ -48,6 +48,8 @@ You need to register commands at least once. Run one of the following commands:
 npm run register-commands
 # Register commands globally (may take up to an hour)
 npm run register-commands global
+# You can also unregister commands by adding the word "unregister"
+npm run register-commands unregister
 ```
 
 ## Usage
