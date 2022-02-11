@@ -33,9 +33,9 @@ async function registerCommands(global: boolean = false, unregister: boolean = f
         );
     }
     if (unregister) {
-        console.log('Successfully unregistered application commands.');
+        console.log(`Successfully unregistered ${commands.length} application commands.`);
     } else {
-        console.log('Successfully registered application commands.');
+        console.log(`Successfully registered ${commands.length} application commands.`);
     }
 }
 
